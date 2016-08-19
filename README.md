@@ -4,7 +4,7 @@ calendar plugins depend on jquery
 /*
  *  $().shineonCalendar({
  * 	"id":"start",//inputid
- * 	"flag":"2015-10-12 0:0:0",//初始化值o
+ * 	"flag":"2015-10-12 0:0:0",//初始化值,或者初始化为空，直接赋值val
  * 	"partline":"-",//年月日间隔线
  * 	"time":true,//是否显示小时分钟秒true(显示时分秒)/false（隐藏时分秒）/hM（隐藏秒）/h（隐藏小时分钟）
  * 	"today":true,//是否显示今天按钮
