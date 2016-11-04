@@ -7,6 +7,8 @@
  * 	"id":"start",//inputid
  * 	"flag":"2015-10-12 0:0:0",//初始化值o
  * 	"partline":"-",//年月日间隔线
+ * 	"min":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="C+id"
+ *  "max":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="E+id"
  * 	"time":true,//是否显示小时分钟秒true(显示时分秒)/false（隐藏时分秒）/hM（隐藏秒）/h（隐藏小时分钟）
  * 	"today":true,//是否显示今天按钮
  *	"ymd":"ymdhMs",//年月日显示格式ymdhMs(M表示分钟)
@@ -14,11 +16,14 @@
  *  "canlendericon":".canlendericon",
  *	"for":"e_end"//关联对比inputid,e_表示结束日期end表示结束日期input的id值s_表示结束日期end表示开始日期input的id值
  *  "focuschange":true/false//当需要比对的日期都为空的时候的开关，true为都为空，false有一个不为空（focusreset的change参数）
+ * 	"valShow":true;初始化显示val值
+ *  "disabled":true,//日历可用不可用
  *	})
  * _month,_year,_hour等用来记录当前选中的年月日所选的排序
  */
 $.fn.shineonCalendar = function(options,fn) 
 {	
+	//函数是否有效标识
 	var fns=false;
 	 if(arguments.length==1 && typeof arguments[0]==="function")
 	 {
@@ -29,6 +34,7 @@ $.fn.shineonCalendar = function(options,fn)
 	 {
 	 	fns=true;
 	 }
+	 //参数错误判断
 	 if((arguments.length==2&&typeof arguments[0]!="object")||(arguments.length==2&&typeof arguments[1]!="function"))
 	 {
 	 	throw new Error("输入参数错误！");
@@ -37,7 +43,7 @@ $.fn.shineonCalendar = function(options,fn)
 	 {
 	 	throw new Error("输入参数错误1！");
 	 }
-	 var _this=this;
+	var _this=this;
 	var partline = "-",//日期格式
 		timestartid = "",
 		timeendid = "",//比较开始时间和结束时间的id
@@ -46,11 +52,15 @@ $.fn.shineonCalendar = function(options,fn)
 		 	"id":"start",
 		 	"flag":"",
 		 	"partline":"-",
+		 	"min":"",
+		 	"max":"",
 		 	"time":true,
 		 	"today":true,
 			"ymd":"ymd",
 			"compareflag":"false",
-			"focuschange":false
+			"focuschange":false,
+			"valShow":false,
+			"disabled":false,
 		},
 		time,
 		ymd,
@@ -122,6 +132,7 @@ $.fn.shineonCalendar = function(options,fn)
 	    ccslt = settings.ccslt,
 	    opt  = $.extend({},optionsdefault,options),
 	    partline = opt["partline"],
+	    
 		canlendaradd=function(){
 			html="<div class=\""+can+"\" style=\"display:none\" id=\""+opt['id']+"__canlender\">";
 			html+="<div class=\"error\">";
@@ -188,18 +199,21 @@ $.fn.shineonCalendar = function(options,fn)
 			{
 				$("body").append(html);
 			}
+			//日历图标按钮判定，如果是，添加id
 			var chargeicon=$("#"+opt['id']).next().attr("class");
 			if(chargeicon==canicon.substring(1))
 			{
 				$("#"+opt['id']).next().attr("id",opt['id']+canicon.substring(1));
 			}
 		},
+		//重置元素方法
 		resetfor=function(datalen,elclass,clas,num){
 			for(i=num;i<datalen;i++)
 			{
 				$(elclass+i).attr("class",clas);
 			}
 		},
+		//隐藏元素方法
 		hidecalender=function(){
 			for(var i=0;i<arguments.length;i++){
 				if(arguments[i]!="")
@@ -208,6 +222,7 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 			}
 		},
+		//显示日历方法
 		showcalender=function(){
 			for(var i=0;i<arguments.length;i++){
 				if(arguments[i]!="")
@@ -219,18 +234,22 @@ $.fn.shineonCalendar = function(options,fn)
 		,
 		//设置input的值
 		setinputval=function(year,month,day,hour,minutes,seconds,id,canlendershow){
+			//修正年份属性和值
 			setattr(".",schy,"set","year",year);
 			settxt(".",schy,"set",year+"年");
+			setattr(".",schy,"set","id","pink"+year);//年份列表
+			//修正月份属性和值
 		    setattr(".",schm,"set","month",month);
 		    settxt(".",schm,"set",twobyte(month)+"月");
-		    setattr(".",schy,"set","id","pink"+year);
-		    setattr(".",schm,"set","id","pinkm"+(month-1));
+		    setattr(".",schm,"set","id","pinkm"+(month-1));//月份列表
+		    //重置年月日时分秒列表元素内容
 			resetyear(year,month);
 			resetmonth(month-1);
 			resetdays(month,year,day);
 		    resethour(hour);
 		    resetminutes(minutes);
 		    resetseconds(seconds);
+		    //设置年月日时分秒的id
 		    btnsevent(id,year,month,day,hour,minutes,seconds,month-1,"false");
 		    if(canlendershow=="undefined"||canlendershow=="hide")
 		    {
@@ -328,7 +347,7 @@ $.fn.shineonCalendar = function(options,fn)
 			}
 			else
 			{
-				inputval=inputval
+				inputval=inputval;
 			}
 			return inputval;
 		},
@@ -453,7 +472,7 @@ $.fn.shineonCalendar = function(options,fn)
 			var datearr = "";
 			if( opt["id"]==inputid)
 			{
-				datearr=parint( opt["day"])
+				datearr=parint( opt["day"]);
 			}
 			$("."+ccd).html("");
 			var premonth=getday(premonthval-1,year);
@@ -475,7 +494,7 @@ $.fn.shineonCalendar = function(options,fn)
 			for(i=startinsertlen-weekdayfirst;i<=startinsertlen;i++){
 				insertday+="<span class=\"noaction pre\">"+i+"</span>";
 			}
-			$("."+ccd+" span").eq(0).before(insertday)
+			$("."+ccd+" span").eq(0).before(insertday);
 			//确定一共有多少个子元素，剩余添加
 			var dayspanlen=42-$("."+ccd+" span").length;
 			var endinsertday="";
@@ -731,7 +750,7 @@ $.fn.shineonCalendar = function(options,fn)
 				setattr("#",id,"set",id+"_minutes",minutes);
 				setattr("#",id,"set",id+"_seconds",seconds);
 			}
-		}
+		},
 		hidehms=function(param){
 	    	var obj=param;
 	    	//隐藏年份弹窗
@@ -763,7 +782,7 @@ $.fn.shineonCalendar = function(options,fn)
 		    	}
 		    	if($("#"+timestartid).attr("compareflag")=="true"&&$("#"+timeendid).attr("compareflag")=="true")
 				{	
-					console.log("进入年份对比11")
+					//console.log("进入年份对比11")
 					compare(timestartid,timeendid,"","","","","","","");
 				}	
 	    	}
@@ -804,7 +823,7 @@ $.fn.shineonCalendar = function(options,fn)
 			//结束时间id
 			if(nowid==timeendid)
 			{
-				console.log("结束时间id");
+				//console.log("结束时间id");
 				//判断开始年份，如果结束年份等于开始年份，需要判断年份的倒数事件，小于开始年份的不可点击
 				if(endyear==startyear)
 				{
@@ -831,9 +850,9 @@ $.fn.shineonCalendar = function(options,fn)
 					}
 					else if(endmonth>=startmonth)
 					{  
-						console.log("结束时间id--年,月相等,左翻按钮不可用a1")
+						//console.log("结束时间id--年,月相等,左翻按钮不可用a1")
 						hidecalender(chmal);
-						$("."+chmal).prev().show()
+						$("."+chmal).prev().show();
 						//开始月份份以前的置灰
 						for(i=0;i<12;i++)
 						{
@@ -842,10 +861,10 @@ $.fn.shineonCalendar = function(options,fn)
 								$("."+chml+" #pinkm"+i).attr("class","noaction");
 							}
 						}
-						console.log(endday+"---"+startday)
+						//console.log(endday+"---"+startday)
 						//月相等，判断天
 						if(endday>startday)
-						{ console.log("aaass")
+						{ //console.log("aaass")
 							resetdays(endmonth,endyear,endday);
 							var resetday=$("#"+cid()).attr("day");
 							$("#pinkd"+resetday).click();
@@ -859,7 +878,7 @@ $.fn.shineonCalendar = function(options,fn)
 							}
 						}
 						else if(endday==startday)
-						{console.log("aaass22")
+						{//console.log("aaass22")
 							var daylen=$("."+ccd+" span");
 							for(i=0;i<daylen.length;i++)
 							{
@@ -868,7 +887,7 @@ $.fn.shineonCalendar = function(options,fn)
 								}
 							}
 							var resetday=$("#"+cid()).attr("day");
-							console.log("结束时间id--年,月，日相等"+resetday)
+							//console.log("结束时间id--年,月，日相等"+resetday)
 							$("#pinkd"+resetday).attr("class","dayselected");
 							var days=$("."+ccd+" .action");
 							for(i=1;i<=days.length;i++)
@@ -881,7 +900,7 @@ $.fn.shineonCalendar = function(options,fn)
 							//天相等，判断小时
 							if(endhour>starthour)
 							{
-								console.log("e-hour--")
+								//console.log("e-hour--")
 								resetfor(24,"#pinkh","action",0);
 								for(i=0;i<24;i++)
 								{
@@ -896,7 +915,7 @@ $.fn.shineonCalendar = function(options,fn)
 								}
 							}
 							else if(endhour==starthour)
-							{console.log("e-hour1==--")
+							{//console.log("e-hour1==--")
 								resetfor(24,"#pinkh","action",0);
 								for(i=0;i<24;i++)
 								{
@@ -960,7 +979,7 @@ $.fn.shineonCalendar = function(options,fn)
 							}
 							else
 							{//结束小时小于开始小时，讲开始小时赋值给结束小时
-								console.log("e-hour1-------ss=--")
+								//console.log("e-hour1-------ss=--")
 								$("."+cchtxt).attr("hour",starthour);
 								$("."+cchtxt).text((starthour<10?("0"+starthour):starthour));
 								resetfor(24,"#pinkh","action",0);
@@ -1026,7 +1045,7 @@ $.fn.shineonCalendar = function(options,fn)
 							}
 						}
 						else{
-							console.log("结束天小")
+							//console.log("结束天小")
 							$("#pinkd"+startday).attr("class","dayselected");
 							var days=$("."+ccd+" .action");
 							for(i=1;i<=startday-1;i++)
@@ -1090,15 +1109,15 @@ $.fn.shineonCalendar = function(options,fn)
 					hidecalender(chyal);
 					$("."+chyal).prev().show();
 					$("."+chyar).show();
-					$("."+chyar).prev().hide()
+					$("."+chyar).prev().hide();
 					$("."+chmar).show();
-					$("."+chmar).prev().hide()
+					$("."+chmar).prev().hide();
 					
 				}
 				else if(endyear>startyear)//结束年份大于开始年份
 				{
-					console.log("结束时间id endyear>startyear")
-					console.log(endyear+"===="+startyear)
+					//console.log("结束时间id endyear>startyear")
+					//console.log(endyear+"===="+startyear)
 					//开始年份以前的置灰
 					for(i=0;i<10;i++)
 					{
@@ -1108,14 +1127,14 @@ $.fn.shineonCalendar = function(options,fn)
 						}
 					}
 					//如果年份不相等，年份倒数可用
-					$("."+chyal).show()
-					$("."+chyal).prev().hide()	
-					$("."+chyar).show()
-					$("."+chyar).prev().hide()
-					$("."+chmar).show()
-					$("."+chmar).prev().hide()	
-					$("."+chmal).show()
-					$("."+chmal).prev().hide()	
+					$("."+chyal).show();
+					$("."+chyal).prev().hide()	;
+					$("."+chyar).show();
+					$("."+chyar).prev().hide();
+					$("."+chmar).show();
+					$("."+chmar).prev().hide()	;
+					$("."+chmal).show();
+					$("."+chmal).prev().hide()	;
 					
 				}
 				else{}
@@ -1126,12 +1145,12 @@ $.fn.shineonCalendar = function(options,fn)
 				$("."+chyar).prev().hide();
 				$("."+chmar).show();
 				$("."+chmar).prev().hide();
-				console.log("开始时间id");
-				console.log(startyear+"---"+endyear)
+				//console.log("开始时间id");
+				//console.log(startyear+"---"+endyear)
 				//结束时间以后的都不可以点击
 				if(startyear>=endyear)
 				{
-					console.log("开始时间id，年相等");
+					//console.log("开始时间id，年相等");
 					hidecalender(chyar);
 					$("."+chyar).prev().show();
 					//结束年份以后的置灰
@@ -1145,7 +1164,7 @@ $.fn.shineonCalendar = function(options,fn)
 					//年相等，判断月份	
 					if(endmonth>startmonth)
 					{
-						console.log("开始时间id，年相等，结束月大"+startmonth+"---"+endmonth);
+						//console.log("开始时间id，年相等，结束月大"+startmonth+"---"+endmonth);
 						//结束月份份以后的置灰
 						for(i=0;i<12;i++)
 						{
@@ -1157,7 +1176,7 @@ $.fn.shineonCalendar = function(options,fn)
 						
 					}
 					else if(endmonth==startmonth)
-					{   console.log("开始时间id，年相等，结束月相等ao");
+					{ //  console.log("开始时间id，年相等，结束月相等ao");
 						$("#"+timestartid).attr("month",endmonth);
 						//重置按钮状态 禁用月份右 年份右 开启左
 						hidecalender(chmar);
@@ -1174,7 +1193,7 @@ $.fn.shineonCalendar = function(options,fn)
 								$("."+chml+" #pinkm"+i).attr("class","noaction");
 							}
 						}
-						console.log("月相等，判断天"+endday+"---"+startday)
+						//console.log("月相等，判断天"+endday+"---"+startday)
 						//月相等，判断天
 						if(endday>startday)
 						{
@@ -1216,7 +1235,7 @@ $.fn.shineonCalendar = function(options,fn)
 									$("."+ccd+" #pinkd"+(i+1)).attr("class","noaction");
 								}
 							}
-							console.log("年月日天都相等，判断小时")
+							//console.log("年月日天都相等，判断小时")
 							//天相等，判断小时
 							resetfor(24,"#pinkh","action",0);
 							resetfor(24,"#pinkh","noaction",endhour);
@@ -1348,7 +1367,7 @@ $.fn.shineonCalendar = function(options,fn)
 								}
 							}
 							//重新赋值input
-							$("#"+cid()).attr("day",endday)
+							$("#"+cid()).attr("day",endday);
 							var dataparam=returnnowdate().split(partline);
 							btnsevent(cid(),dataparam[0],dataparam[1],dataparam[2],dataparam[3],dataparam[4],dataparam[5],parseInt(dataparam[1])-1,"false");
 							$("#pinkd"+dataparam[2]).attr("class","dayselected")	;
@@ -1356,7 +1375,7 @@ $.fn.shineonCalendar = function(options,fn)
 					}
 					else
 					{
-						console.log("开始时间id，年相等，结束月小");
+						//console.log("开始时间id，年相等，结束月小");
 						//结束月赋值到开始时间
 						
 						//重新赋值input
@@ -1371,7 +1390,7 @@ $.fn.shineonCalendar = function(options,fn)
 						btnsevent(cid(),dataparam[0],dataparam[1],dataparam[2],dataparam[3],dataparam[4],dataparam[5],parseInt(dataparam[1])-1,"false");
 						$("#pinkd"+dataparam[2]).attr("class","dayselected");
 						var spanlen=$("."+ccd+" span").length;
-						var noactionlen=$("."+ccd+" .noaction").length
+						var noactionlen=$("."+ccd+" .noaction").length;
 						for(i=parseInt(dataparam[2]);i<=spanlen-noactionlen;i++)
 						{
 							$("#pinkd"+(i+1)).attr("class","noaction");
@@ -1380,7 +1399,7 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 				else if(startyear<endyear)//结束年份大于开始年份
 				{
-					console.log("开始时间id，结束年份大");
+					//console.log("开始时间id，结束年份大");
 					//结束年份以后的置灰
 					for(i=0;i<10;i++)
 					{
@@ -1400,6 +1419,7 @@ $.fn.shineonCalendar = function(options,fn)
 			return compareval;
 		},
 		initreset=function(id,ymd,compareflag,timeflag,todayflag,forflag){
+			
 			var ymdcount=0;
 			for(var i=0;i<ymd.length;i++){
 				switch(ymd[i]){
@@ -1430,6 +1450,11 @@ $.fn.shineonCalendar = function(options,fn)
 			$("#"+id).attr("ondragenter","return false");
 			$("#"+id).attr("oncontextmenu","return false");
 			$("#"+id).attr("style","ime-mode:disabled");
+			if(opt.min!=""){
+				$("#C"+id).attr("style","ime-mode:disabled;width:0;display: none;");
+			}else if(opt.max!=""){
+				$("#E"+id).attr("style","ime-mode:disabled;width:0;display: none;");
+			}
 			if(timeflag==false||timeflag=="false")
 			{
 				//console.log("ttt")
@@ -1508,12 +1533,12 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 				if(change){
 					$("#"+id).val(timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1));
-				    $("#"+id).attr("defval",timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1))
+				    $("#"+id).attr("defval",timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1));
 				}
 				else{
-					console.log(dataval.substring(0,dataval.length-1)+" 444444 "+timeval.substring(0,timeval.length-1))
+					//console.log(dataval.substring(0,dataval.length-1)+" 444444 "+timeval.substring(0,timeval.length-1))
 					$("#"+id).val(dataval.substring(0,dataval.length-1)+" "+timeval.substring(0,timeval.length-1));
-					$("#"+id).attr("defval",dataval.substring(0,dataval.length-1)+" "+timeval.substring(0,timeval.length-1))
+					$("#"+id).attr("defval",dataval.substring(0,dataval.length-1)+" "+timeval.substring(0,timeval.length-1));
 				}
 				
 			}
@@ -1599,11 +1624,11 @@ $.fn.shineonCalendar = function(options,fn)
 					btnsevent(id,inityear,initmonth,initday,inithour,initminutes,initseconds,initmonth-1,"true");
 					if(change){
 						$("#"+id).val(timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1));
-						$("#"+id).attr("defval",timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1))
+						$("#"+id).attr("defval",timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1));
 					}
 					else{
 						$("#"+id).val(dataval.substring(0,dataval.length-1)+" "+timeval.substring(0,timeval.length-1));
-						$("#"+id).attr("defval",dataval.substring(0,dataval.length-1)+" "+timeval.substring(0,timeval.length-1))
+						$("#"+id).attr("defval",dataval.substring(0,dataval.length-1)+" "+timeval.substring(0,timeval.length-1));
 					}	
 				}
 				if(setinput=="focusc"){
@@ -1624,8 +1649,21 @@ $.fn.shineonCalendar = function(options,fn)
 		initcalendar=function()
 		{
 			var id=opt["id"];
+			if(opt.min!=""){
+				var html = '<input class="time hide" id="C'+id+'" value="'+opt.min+'" >';
+				$("#"+id).before(html);
+				initreset("C"+id,opt["ymd"],true,opt["time"],opt["today"],"e_"+id);
+				$("#C"+id).attr("defval",opt.min);
+			}
+			if(opt.max!=""){
+				var html = '<input class="time hide" id="E'+id+'" value="'+opt.max+'" >';
+				$("#"+id).next().after(html);
+				initreset("E"+id,opt["ymd"],true,opt["time"],opt["today"],"s_"+id);
+				$("#E"+id).attr("defval",opt.max);
+			}
 			initreset(id,opt["ymd"],opt["compareflag"],opt["time"],opt["today"],opt["for"]);
 			var timeval=opt['flag']||$("#"+id).val()||$("#"+id).attr("defval");
+			
 			if(timeval==""||timeval==undefined)
 			{//input没有初始化值
 				setattr("#",id,"set",id+"_year",0);//初始化为pink0;
@@ -1654,11 +1692,14 @@ $.fn.shineonCalendar = function(options,fn)
 					"seconds":seconds
 				};
 			    focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,opt['focuschange']);
-			    $("#"+id).val("")
+			    if(!opt.valShow){
+			    	 $("#"+id).val("");
+			    }
+
 			}
 			else
 			{	
-				$("#"+id).attr("defval",timeval)
+				$("#"+id).attr("defval",timeval);
 				var res = timeval.split(" ");
 				var change=false,res1,res2;
 				if((res[0]+"").indexOf(partline)<0){
@@ -1713,6 +1754,9 @@ $.fn.shineonCalendar = function(options,fn)
 		
 		focuspart=function(id)
 		{
+			if(opt['disabled']){
+				return false;
+			}
 			hidecalender(chyl,chml,cchl,ccml,ccsl);
 			
 	      	//获取start的屏幕坐标
@@ -1755,9 +1799,9 @@ $.fn.shineonCalendar = function(options,fn)
 		    	//对需要对比的另一项进行初始值恢复,还需要判断当前时间是否为空和救赎时间是否为空
 		    	if(id==timestartid)
 		    	{//开始时间
-		    		console.log($("#"+id).val()+"--vallll===="+$("#"+timeendid).val())
+		    		//console.log($("#"+id).val()+"--vallll===="+$("#"+timeendid).val())
 		    		if($("#"+id).val()==""&&$("#"+timeendid).val()==""){
-		    			console.log("开始时间，结束时间都为空，结束时间不做限制")
+		    			//console.log("开始时间，结束时间都为空，结束时间不做限制")
 		    			$("#"+id).attr("cflag","true");
 		    			$("#"+id).attr("compareflag","false");  
 		    		}
@@ -1773,7 +1817,7 @@ $.fn.shineonCalendar = function(options,fn)
 		    	}
 		    	if($("#"+timestartid).attr("compareflag")=="true"&&$("#"+timeendid).attr("compareflag")=="true")
 				{	
-					console.log("进入比对")
+					//console.log("进入比对")
 					compare(timestartid,timeendid,"","","","","","","");
 				}	
 	    	}
@@ -1843,19 +1887,19 @@ $.fn.shineonCalendar = function(options,fn)
 			}
 			if($("#"+id).attr("cflag")=="true")
 			{
-				console.log("aaaaaa1")
+				//console.log("aaaaaa1")
 				focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
 				$("#"+id).attr("compareflag","true");
 				var forval=$("#"+id).attr("for");
 				var timeendid=forval.substring(2,forval.length);
-				$("#"+timeendid).attr("defval",$("#"+id).attr("defval"))
+				$("#"+timeendid).attr("defval",$("#"+id).attr("defval"));
 				var rese=$("#"+timeendid).attr("defval").split(" ");
 				focusreset(timeendid,rese,$("#"+timeendid).attr("ymd").length,$("#"+timeendid).attr("ymd"),"focusc",change);
-				$("#"+id).removeAttr("cflag")
+				$("#"+id).removeAttr("cflag");
 			}
 			else
 			{
-				console.log("-----5555552------")
+				//console.log("-----5555552------")
 				focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
 			}
 			resetstartend(id);
@@ -1867,7 +1911,7 @@ $.fn.shineonCalendar = function(options,fn)
 	document.getElementsByClassName(chylup)[0].onclick=function(){
 		//获取第一个的年份
 			var firstyear=parint(setattr(".",chyls+" span:first","get","year",0));
-			console.log("firstyearfirstyear"+firstyear)
+//			console.log("firstyearfirstyear"+firstyear)
 			yearupdown(firstyear,-10,0);
 	}
 	//年份点击事件--正向年份
@@ -1911,7 +1955,7 @@ $.fn.shineonCalendar = function(options,fn)
 	}
 	//年份下拉菜单点击
 	document.getElementsByClassName(chyad)[0].onclick=function(){
-		console.log("yeardown")
+		//console.log("yeardown")
 		var thisid=cid();
 		var flag=$("."+chyl).css("display");
 		if(flag=="block"){
@@ -1927,7 +1971,8 @@ $.fn.shineonCalendar = function(options,fn)
 			if(nowyearid>10)
 			{
 				nowyearid=0
-			}console.log(nowyear+"vnowyear")
+			}
+//			console.log(nowyear+"vnowyear")
 			yearupdown(nowyear,-nowyearid,-nowyearid+10);
 		}
 	}	
@@ -1971,7 +2016,7 @@ $.fn.shineonCalendar = function(options,fn)
 	 * */
 	//月份切换--右箭头
 	document.getElementsByClassName(chmar)[0].onclick=function(){
-		showcalender(chmal,chyal)
+		showcalender(chmal,chyal);
 		$("."+chmal).prev().hide();
 		$("."+chyal).prev().hide();
 		var id=cid();
@@ -1981,7 +2026,7 @@ $.fn.shineonCalendar = function(options,fn)
 		var premonthval=parint(setattr("#",id,"get","month",0));
 		if(premonthval>=12)
 		{
-			settxt(".",schy,"set",(preyearval+1)+"年")
+			settxt(".",schy,"set",(preyearval+1)+"年");
 			setattr(".",schy,"set","year",(preyearval+1));
 			setattr(".",schm,"set","month",0);
 			settxt(".",schm,"set","01月");
@@ -2239,7 +2284,7 @@ $.fn.shineonCalendar = function(options,fn)
 					setattr(".","dayselected","set","class","action");
 			   		setattr("#",id,"set","day",thisval);
 			   		setattr("#",id,"set",id+"_day",thisval);
-			   		this.setAttribute("class","dayselected")
+			   		this.setAttribute("class","dayselected");
 				   resetstartend(id);
 				}
 				else if(thisclass=="noaction pre")//天数置灰部分点击事件（上个月） 
@@ -2304,6 +2349,9 @@ $.fn.shineonCalendar = function(options,fn)
 		var hour=$(this).parents("."+can).find("."+cchtxt).attr("hour");
 		var minutes=$(this).parents("."+can).find("."+ccmtxt).attr("minutes");
 		var seconds=$(this).parents("."+can).find("."+ccstxt).attr("seconds");
+		if(month=="0"){
+			month=1
+		}
 		if(day==""||day==undefined){
 			day=1;
 		}
@@ -2329,19 +2377,19 @@ $.fn.shineonCalendar = function(options,fn)
 		
 		if($("#"+id).attr("cflag")=="true")
 		{
-			console.log("aaaaaa")
+//			console.log("aaaaaa")
 			focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
 			$("#"+id).attr("compareflag","true");
 			var forval=$("#"+id).attr("for");
 			var timeendid=forval.substring(2,forval.length);
-			$("#"+timeendid).attr("defval",$("#"+id).attr("defval"))
+			$("#"+timeendid).attr("defval",$("#"+id).attr("defval"));
 			var rese=$("#"+timeendid).attr("defval").split(" ");
 			focusreset(timeendid,rese,$("#"+timeendid).attr("ymd").length,$("#"+timeendid).attr("ymd"),"focusc",change);
-			$("#"+id).removeAttr("cflag")
+			$("#"+id).removeAttr("cflag");
 		}
 		else
 		{
-			console.log("-----555555------")
+			//console.log("-----555555------")
 			focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
 		}
 		//点击确定，清空，或者今天的时候重新赋值
