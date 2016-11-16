@@ -7,10 +7,11 @@
  * 	"id":"start",//inputid
  * 	"flag":"2015-10-12 0:0:0",//初始化值o
  * 	"partline":"-",//年月日间隔线
- * 	"min":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="C+id"
- *  "max":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="E+id"
+ * 	"min":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="s_C+id"
+ *  "max":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="e_E+id"
  * 	"time":true,//是否显示小时分钟秒true(显示时分秒)/false（隐藏时分秒）/hM（隐藏秒）/h（隐藏小时分钟）
  * 	"today":true,//是否显示今天按钮
+ *  "clear":true,//是否显示清空按钮
  *	"ymd":"ymdhMs",//年月日显示格式ymdhMs(M表示分钟)
  *	"compareflag":"true",//是否需要对比开始结束日期
  *  "canlendericon":".canlendericon",
@@ -56,6 +57,7 @@ $.fn.shineonCalendar = function(options,fn)
 		 	"max":"",
 		 	"time":true,
 		 	"today":true,
+		 	"clear":true,
 			"ymd":"ymd",
 			"compareflag":"false",
 			"focuschange":false,
@@ -782,7 +784,7 @@ $.fn.shineonCalendar = function(options,fn)
 		    	}
 		    	if($("#"+timestartid).attr("compareflag")=="true"&&$("#"+timeendid).attr("compareflag")=="true")
 				{	
-					//console.log("进入年份对比11")
+					//console.log("进入年份对比11"+"--"+timestartid+"--"+timeendid)
 					compare(timestartid,timeendid,"","","","","","","");
 				}	
 	    	}
@@ -1414,11 +1416,11 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 				else{/*结束时间小,开始时间设置为结束时间*/}
 			}
-			
+			dayclick();
 			var compareval=returnnowdate();
 			return compareval;
 		},
-		initreset=function(id,ymd,compareflag,timeflag,todayflag,forflag){
+		initreset=function(id,ymd,compareflag,timeflag,todayflag,forflag,clearflag){
 			
 			var ymdcount=0;
 			for(var i=0;i<ymd.length;i++){
@@ -1446,6 +1448,7 @@ $.fn.shineonCalendar = function(options,fn)
 			{
 				$("#"+id).attr("compareflag",compareflag);
 			}
+			$("#"+id).attr("clear",clearflag);
 			$("#"+id).attr("onpaste","return false");
 			$("#"+id).attr("ondragenter","return false");
 			$("#"+id).attr("oncontextmenu","return false");
@@ -1490,13 +1493,20 @@ $.fn.shineonCalendar = function(options,fn)
 				showcalender(cchtxt);
 				$("."+cchtxt).prev().show();
 			}
-			
-			if(todayflag===false||todayflag==="false")
-			{
-				hidecalender(btntoday);
-			}
 		},
 		focusreset=function(id,res,forlen,switchflag,setinput,change){
+			if($("#"+id).attr("clear")=="true"){
+				$("."+btncancel).show();
+			}
+			if($("#"+id).attr("today")=="true"){
+				$("."+btnsure).show();
+			}
+			if($("#"+id).attr("clear")=="false"){
+				hidecalender(btncancel);
+			}
+			if($("#"+id).attr("today")=="false"){
+				hidecalender(btntoday);
+			}
 			var timeval="",dataval="";
 			var inityear,initmonth,initday,inithour,initminutes,initseconds;
 			if(res=="")
@@ -1531,7 +1541,9 @@ $.fn.shineonCalendar = function(options,fn)
 						break;
 					}
 				}
+				
 				if(change){
+					
 					$("#"+id).val(timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1));
 				    $("#"+id).attr("defval",timeval.substring(0,timeval.length-1)+" "+dataval.substring(0,dataval.length-1));
 				}
@@ -1652,16 +1664,16 @@ $.fn.shineonCalendar = function(options,fn)
 			if(opt.min!=""){
 				var html = '<input class="time hide" id="C'+id+'" value="'+opt.min+'" >';
 				$("#"+id).before(html);
-				initreset("C"+id,opt["ymd"],true,opt["time"],opt["today"],"e_"+id);
+				initreset("C"+id,opt["ymd"],true,opt["time"],opt["today"],"e_"+id,opt["clear"]);
 				$("#C"+id).attr("defval",opt.min);
 			}
 			if(opt.max!=""){
 				var html = '<input class="time hide" id="E'+id+'" value="'+opt.max+'" >';
 				$("#"+id).next().after(html);
-				initreset("E"+id,opt["ymd"],true,opt["time"],opt["today"],"s_"+id);
+				initreset("E"+id,opt["ymd"],true,opt["time"],opt["today"],"s_"+id,opt["clear"]);
 				$("#E"+id).attr("defval",opt.max);
 			}
-			initreset(id,opt["ymd"],opt["compareflag"],opt["time"],opt["today"],opt["for"]);
+			initreset(id,opt["ymd"],opt["compareflag"],opt["time"],opt["today"],opt["for"],opt["clear"]);
 			var timeval=opt['flag']||$("#"+id).val()||$("#"+id).attr("defval");
 			
 			if(timeval==""||timeval==undefined)
@@ -1767,7 +1779,7 @@ $.fn.shineonCalendar = function(options,fn)
 	    	var nowinputid  = $("#"+id).attr("id");
 	    	var nowinputfor;
 	    	//重新赋值
-	    	initreset(id,$("#"+id).attr("ymd"),$("#"+id).attr("compareflag"),$("#"+id).attr("time"),$("#"+id).attr("today"),$("#"+id).attr("for"));
+	    	initreset(id,$("#"+id).attr("ymd"),$("#"+id).attr("compareflag"),$("#"+id).attr("time"),$("#"+id).attr("today"),$("#"+id).attr("for"),$("#"+id).attr("clear"));
 	    	var res=$("#"+id).attr("defval").split(" ");
 	    	var change=false,res1,res2;
 			if((res[0]+"").indexOf(partline)<0){
@@ -2275,8 +2287,10 @@ $.fn.shineonCalendar = function(options,fn)
 		var dayeventsel=document.getElementsByClassName(ccd)[0].getElementsByTagName("span");
 		for(var i=0;i<dayeventsel.length;i++)
 		{
+			
 			dayeventsel[i].addEventListener("click",function(){
 				var thisclass=this.getAttribute("class");
+				
 				if(thisclass=="action")
 				{
 					var id=cid();
