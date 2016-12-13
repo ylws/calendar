@@ -1,0 +1,158 @@
+<html>
+	<body>
+		<style type="text/css">
+			*{
+				background: rgba(0,0,0,0.5);
+				font-size: 14px;
+				font-family: "arial, helvetica, sans-serif";
+				color: #fff;
+				float: left;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+			}
+			b{
+				background: none;
+				font-size: 16px;
+				color: blanchedalmond;
+				margin: 10px 0;
+			}
+		</style>
+<b>//弹窗各参数<b>
+<pre>
+	$().shineonCalendar({
+ 	   "id":"start",//input id
+ 	   "flag":"2015-10-12 0:0:0",//初始化值o或者val值皆可
+ 	   "partline":"-",//年月日间隔线
+ 	   "min":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="s_C+id"
+       "max":"2016-9-10 12:00:50",//设置最小值，需要compareflag=true,for="e_E+id"
+ 	   "time":true,//是否显示小时分钟秒true(显示时分秒)/false（隐藏时分秒）/hM（隐藏秒）/h（隐藏小时分钟）
+  	   "today":true,//是否显示今天按钮
+       "clear":true,//是否显示清空按钮
+ 	   "ymd":"ymdhMs",//年月日显示格式ymdhMs(M表示分钟)
+ 	   "compareflag":"true",//是否需要对比开始结束日期
+       "canlendericon":".canlendericon",//日历后面的日历图标样式
+ 	   "for":"e_end"//关联对比inputid,e_表示结束日期end表示结束日期input的id值s_表示结束日期end表示开始日期input的id值
+       "focuschange":true/false//当需要比对的日期都为空的时候的开关，true为都为空，false有一个不为空（focusreset的change参数）
+  	   "valShow":true;//初始化显示val值
+       "disabled":true,//日历可用不可用
+ 	})
+</pre>
+<b>设置最小值<b>
+
+<pre>
+&lt;input type="text" id="end" class="time" value=""/&gt;
+$().shineonCalendar({
+	"id":"end",//inputid
+	"flag":"2015-12-1 0:0:0",//是有初始化值
+	"partline":"-",//年月日间隔线
+	"time":false,//是否显示小时分钟秒
+	"today":true,//是否显示今天按钮
+	"clear":false,
+	"ymd":"ymd",//年月日显示
+	"compareflag":"true",//是否需要对比开始结束日期
+	"min":"2015-11-1 0:0:0",
+	"for":"s_Cstart"
+	
+},function(){
+	//todo
+})	
+</pre>
+<pre>
+&lt;input type="text" id="end" class="time" value="2015-12-1 0:0:0"/&gt;
+$().shineonCalendar({
+	"id":"end",//inputid
+	"flag":"",//是有初始化值
+	"partline":"-",//年月日间隔线
+	"time":false,//是否显示小时分钟秒
+	"today":true,//是否显示今天按钮
+	"clear":false,
+	"ymd":"ymd",//年月日显示
+	"compareflag":"true",//是否需要对比开始结束日期
+	"min":"2015-11-1 0:0:0",
+	"for":"s_Cstart"
+	
+},function(){
+	//todo
+})	
+</pre>
+<b>设置最大值<b>
+
+<pre>
+&lt;input type="text" id="start" class="time" value=""/&gt;
+$().shineonCalendar({
+	"id":"start",//inputid
+	"flag":"2015-12-1 0:0:0",//是有初始化值
+	"partline":"-",//年月日间隔线
+	"time":false,//是否显示小时分钟秒
+	"today":true,//是否显示今天按钮
+	"clear":false,
+	"ymd":"ymd",//年月日显示
+	"compareflag":"true",//是否需要对比开始结束日期
+	"max":"2015-11-1 0:0:0",
+	"for":"s_Estart"
+	
+},function(){
+	//todo
+})	
+</pre>
+<pre>
+&lt;input type="text" id="end" class="time" value="2015-12-1 0:0:0"/&gt;
+$().shineonCalendar({
+	"id":"start",//inputid
+	"flag":"",//是有初始化值
+	"partline":"-",//年月日间隔线
+	"time":false,//是否显示小时分钟秒
+	"today":true,//是否显示今天按钮
+	"clear":false,
+	"ymd":"ymd",//年月日显示
+	"compareflag":"true",//是否需要对比开始结束日期
+	"max":"2015-11-1 0:0:0",
+	"for":"s_Estart"
+	
+},function(){
+	//todo
+})	
+</pre>
+<b>日历<b>
+
+<pre>
+&lt;input type="text" id="start" class="time" value=""/&gt;
+$().shineonCalendar({
+	"id":"start",//inputid
+	"partline":"-",//年月日间隔线
+	"ymd":"ymd",//年月日显示
+},function(){
+	//todo
+})	
+</pre>
+<b>日历开始时间结束时间比对<b>
+
+<pre>
+&lt;input type="text" id="start" class="time" value=""/&gt;
+&lt;input type="text" id="end" class="time" value=""/&gt;
+//开始时间
+$().shineonCalendar({
+		"id":"start",//inputid
+		"partline":"-",//年月日间隔线
+		"time":false,//是否显示小时分钟秒
+		"today":true,//是否显示今天按钮
+		"clear":true,
+		"ymd":"ymd",//年月日显示格式ymd/mdy
+		"compareflag":true,//是否需要对比开始结束日期
+		"for":"e_end"//关联对比inputid,e_表示结束日期end表示结束日期input的id值
+})
+//结束时间
+$().shineonCalendar({
+		"id":"end",//inputid
+		"partline":"-",//年月日间隔线
+		"time":false,//是否显示小时分钟秒
+		"today":true,//是否显示今天按钮
+		"clear":true,
+		"ymd":"ymd",
+		"compareflag":true,//是否需要对比开始结束日期
+		"for":"s_start"//关联对比inputid,s_表示开始日期start表示开始日期input的id值
+})	
+</pre>
+	</body>
+</html>
