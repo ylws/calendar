@@ -1416,7 +1416,11 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 				else{/*结束时间小,开始时间设置为结束时间*/}
 			}
+			//重新绑定事件
 			dayclick();
+		    secondsclick();
+		    minutesclick();
+		    hoursclick();
 			var compareval=returnnowdate();
 			return compareval;
 		},
@@ -1728,7 +1732,7 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 				var inityear,initmonth,initday,inithour,initminutes,initseconds;
 				//判断日期查分符号正确与否
-				if((res1+"").indexOf(partline)<0 || (res2!=undefined&&(res2+"").indexOf(":")<0))
+				if((res1+"").indexOf(partline)<0 || (res2!=""&&res2!=undefined&&(res2+"").indexOf(":")<0))
 				{
 					throw new Error("初始化错误：partline拆分符号不一致;");
 				}
@@ -2193,6 +2197,7 @@ $.fn.shineonCalendar = function(options,fn)
 				var thisclass=this.getAttribute("class");
 				if(thisclass=="action")
 				{
+					this.parentNode.getElementsByClassName("hourselected")[0].setAttribute("class","action");
 					var thisval=parseInt(this.innerText);
 					var	realval    = fomcatdate(realval,thisval);
 			    	settxt(".",cchtxt,"set",realval);
@@ -2230,6 +2235,7 @@ $.fn.shineonCalendar = function(options,fn)
 				var thisclass=this.getAttribute("class");
 				if(thisclass=="action")
 				{
+					this.parentNode.getElementsByClassName("minutesselected")[0].setAttribute("class","action");
 					var thisval=parseInt(this.innerText);
 					var	realval    = fomcatdate(realval,thisval);
 			    	settxt(".",ccmtxt,"set",realval);
@@ -2287,10 +2293,8 @@ $.fn.shineonCalendar = function(options,fn)
 		var dayeventsel=document.getElementsByClassName(ccd)[0].getElementsByTagName("span");
 		for(var i=0;i<dayeventsel.length;i++)
 		{
-			
 			dayeventsel[i].addEventListener("click",function(){
 				var thisclass=this.getAttribute("class");
-				
 				if(thisclass=="action")
 				{
 					var id=cid();
@@ -2419,5 +2423,3 @@ $.fn.shineonCalendar = function(options,fn)
 		$("."+can).hide();
 	}
 };
-//<input type="text" id="start" style="width: 152px;" class="time" name="section.beginTime"/>
-//									<div class="canlendericon"></div>
