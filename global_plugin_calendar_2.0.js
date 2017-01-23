@@ -136,67 +136,67 @@ $.fn.shineonCalendar = function(options,fn)
 	    partline = opt["partline"],
 	    
 		canlendaradd=function(){
-			html="<div class=\""+can+"\" style=\"display:none\" id=\""+opt['id']+"__canlender\">";
-			html+="<div class=\"error\">";
-			html+="<div class=\"error_title\">错误</div>";
-			html+="<div class=\"errortxt\">输入错误，请重新填写</div>";
-			html+="</div>";
-			html+="<div class=\"canlerder_header\">";
-			html+="<div class=\"noclick\"><div class=\"arrowleft\"></div></div>";
-			html+="<div class=\""+chyal+"\"><div class=\"arrowleft\"></div></div>";
-			html+="<div class=\""+schy+"\" year=\"\"></div>";
-			html+="<div class=\""+chyad+"\"><div class=\"arrowright90\"></div></div>";
-			html+="<div class=\"noclick\"><div class=\"arrowright\"></div></div>";
-			html+="<div class=\""+chyar+"\"><div class=\"arrowright\"></div></div>";
-			html+="<div class=\"noclick\"><div class=\"arrowleft\"></div></div>";
-			html+="<div class=\""+chmal+"\"><div class=\"arrowleft\"></div></div>";
-			html+="<div class=\""+schm+"\" month=\"\"></div>";
-			html+="<div class=\""+chmad+"\"><div class=\"arrowright90\"></div></div>";
-			html+="<div class=\"noclick\"><div class=\"arrowright\"></div></div>";
-			html+="<div class=\""+chmar+"\"><div class=\"arrowright\"></div></div>";
-			html+="<div class=\""+chyl+"\">";
-			html+="<div class=\""+chylup+"\">上一页</div>";
-			html+="<div class=\""+chyls+"\"></div>";
-			html+="<div class=\""+chyldown+"\">下一页</div>";
-			html+="</div>";
-			html+="<div class=\""+chml+"\"></div>";
-			html+="</div>";
-			html+="<div class=\"canlerder_content\">";
-			html+="<div class=\"canlerder_content_week\">";		
-			html+="<span>日</span>";		
-			html+="<span>一</span>";		
-			html+="<span>二</span>";		
-			html+="<span>三</span>";		
-			html+="<span>四</span>";		
-			html+="<span>五</span>";			
-			html+="<span>六</span>";			
-			html+="</div>";			
-			html+="<div class=\""+ccd+"\"></div>";		
-			html+="<div class=\"canlerder_content_hmsandlist\">";		
-			html+="<div class=\"canlerder_content_hmsandlist_timetxt\">时间：</div>";	
-			html+="<div class=\""+cchtxt+"\"></div>";	
-			html+="<div class=\"canlerder_content_hmsandlist_othertxt\">：</div>";		
-			html+="<div class=\""+ccmtxt+"\"></div>";			
-			html+="<div class=\"canlerder_content_hmsandlist_othertxt\">：</div>";			
-			html+="<div class=\""+ccstxt+"\"></div>";			
-			html+="<div class=\""+cchl+"\">";			
-			html+="<div class=\""+cchlt+"\">小时<span>x</span></div>";			
-			html+="<div class=\""+cchls+"\"></div>";			
-			html+="</div>";			
-			html+="<div class=\""+ccml+"\">";		
-			html+="<div class=\""+ccmlt+"\">分钟<span>x</span></div>";		
-			html+="<div class=\""+ccmls+"\"></div>";		
-			html+="</div>";			
-			html+="<div class=\""+ccsl+"\">";		
-			html+="<div class=\""+ccslt+"\">秒<span>x</span></div>";		
-			html+="<div class=\""+ccsls+"\"></div>";		
-			html+="</div>";			
-			html+="<div class=\""+btnsure+"\">确定</div>";		
-			html+="<div class=\""+btncancel+"\">清空</div>";		
-			html+="<div class=\""+btntoday+"\">今天</div>";		
-			html+="</div>";			
-			html+="</div>";	
-			html+="</div>";
+			html='<div class="'+can+'" style="display:none" id="'+opt["id"]+'__canlender">';
+			html+='<div class="error">';
+			html+='<div class="error_title">错误</div>';
+			html+='<div class="errortxt">输入错误，请重新填写</div>';
+			html+='</div>';
+			html+='<div class="canlerder_header">';
+			html+='<div class="noclick"><div class="arrowleft"></div></div>';
+			html+='<div class="'+chyal+'"><div class="arrowleft"></div></div>';
+			html+='<div class="'+schy+'" year=""></div>';
+			html+='<div class="'+chyad+'"><div class="arrowright90"></div></div>';
+			html+='<div class="noclick"><div class="arrowright"></div></div>';
+			html+='<div class="'+chyar+'"><div class="arrowright"></div></div>';
+			html+='<div class="noclick"><div class="arrowleft"></div></div>';
+			html+='<div class="'+chmal+'"><div class="arrowleft"></div></div>';
+			html+='<div class="'+schm+'" month=""></div>';
+			html+='<div class="'+chmad+'"><div class="arrowright90"></div></div>';
+			html+='<div class="noclick"><div class="arrowright"></div></div>';
+			html+='<div class="'+chmar+'"><div class="arrowright"></div></div>';
+			html+='<div class="'+chyl+'">';
+			html+='<div class="'+chylup+'">上一页</div>';
+			html+='<div class="'+chyls+'"></div>';
+			html+='<div class="'+chyldown+'">下一页</div>';
+			html+='</div>';
+			html+='<div class="'+chml+'"></div>';
+			html+='</div>';
+			html+='<div class="canlerder_content">';
+			html+='<div class="canlerder_content_week">';	
+			html+='<span>日</span>';	
+			html+='<span>一</span>';
+			html+='<span>二</span>';	
+			html+='<span>三</span>';		
+			html+='<span>四</span>';	
+			html+='<span>五</span>';		
+			html+='<span>六</span>';			
+			html+='</div>';		
+			html+='<div class="'+ccd+'"></div>';		
+			html+='<div class="canlerder_content_hmsandlist">';		
+			html+='<div class="canlerder_content_hmsandlist_timetxt">时间：</div>';	
+			html+='<div class="'+cchtxt+'"></div>';
+			html+='<div class="canlerder_content_hmsandlist_othertxt">：</div>';		
+			html+='<div class="'+ccmtxt+'"></div>';		
+			html+='<div class="canlerder_content_hmsandlist_othertxt">：</div>';			
+			html+='<div class="'+ccstxt+'"></div>';		
+			html+='<div class="'+cchl+'">';		
+			html+='<div class="'+cchlt+'">小时<span>x</span></div>';		
+			html+='<div class="'+cchls+'"></div>';		
+			html+='</div>';		
+			html+='<div class="'+ccml+'">';		
+			html+='<div class="'+ccmlt+'">分钟<span>x</span></div>';		
+			html+='<div class="'+ccmls+'"></div>';		
+			html+='</div>';		
+			html+='<div class="'+ccsl+'">';		
+			html+='<div class="'+ccslt+'">秒<span>x</span></div>';	
+			html+='<div class="'+ccsls+'"></div>';		
+			html+='</div>';		
+			html+='<div class="'+btnsure+'">确定</div>';		
+			html+='<div class="'+btncancel+'">清空</div>';	
+			html+='<div class="'+btntoday+'">今天</div>';	
+			html+='</div>';			
+			html+='</div>';	
+			html+='</div>';
 			if($("."+can).length<=0)
 			{
 				$("body").append(html);
@@ -2322,20 +2322,24 @@ $.fn.shineonCalendar = function(options,fn)
     	focuspart(opt['id']);
     });
 	 //点击空白区域，隐藏select模拟
-	 document.onclick=function(e){
-	 	var targetid=e.target.getAttribute("id");
-		if(e.target.getAttribute("class")==canicon.substring(1))
+	$(document).bind("click",function(e){
+	 	var e = e||window.event;
+	 	var targets = e.target||e.srcElement;
+	 	var targetid=targets.getAttribute("id");
+		if(targets.getAttribute("class")==canicon.substring(1))
 		{
 			focuspart($("#"+targetid).prev().attr("id"));
 		}
 		var thisid=cid();
+		
 		if($("#"+thisid+"__canlendar").offset()!=undefined)
 		{	
 			var startleft=$("#"+thisid+"__canlendar").offset()['left'];
 			var starttop=$("#"+thisid+"__canlendar").offset()['top'];
-			var ex=e.pageX;
-			var ey=e.pageY;
-			if($(e.target).closest("#"+thisid+"__canlendar").length == 0)
+			var ex=e.pageX||e.clientX;
+			var ey=e.pageY||e.clientY;
+			
+			if($(targets).closest("#"+thisid+"__canlendar").length == 0)
 			{
 				if(ex>startleft+$("#"+thisid+"__canlendar").width()||ey>starttop+$("#"+thisid+"__canlendar").height()||ey<starttop-$("#"+thisid).height()||ex<startleft)
 				{
@@ -2343,7 +2347,7 @@ $.fn.shineonCalendar = function(options,fn)
 				}
 			}
 		}
-	 }
+	 });
 	//年列表鼠标经过事件
 	$("."+chyl).mouseover(function(){
 		$(this).show();
@@ -2361,12 +2365,13 @@ $.fn.shineonCalendar = function(options,fn)
 	//点击确定按钮事件
 	document.getElementsByClassName(btnsure)[0].onclick=function(){
 		var id=cid();
-		var year=$(this).parents("."+can).find("."+schy).attr("year");
-		var month=$(this).parents("."+can).find("."+schm).attr("month");
-		var day=$(this).parents("."+can).find(".dayselected").text();
-		var hour=$(this).parents("."+can).find("."+cchtxt).attr("hour");
-		var minutes=$(this).parents("."+can).find("."+ccmtxt).attr("minutes");
-		var seconds=$(this).parents("."+can).find("."+ccstxt).attr("seconds");
+		var parents = $(this).parents("."+can);
+		var year=parents.find("."+schy).attr("year");
+		var month=parents.find("."+schm).attr("month");
+		var day=parents.find(".dayselected").text();
+		var hour=parents.find("."+cchtxt).attr("hour");
+		var minutes=parents.find("."+ccmtxt).attr("minutes");
+		var seconds=parents.find("."+ccstxt).attr("seconds");
 		if(month=="0"){
 			month=1
 		}
