@@ -62,7 +62,7 @@ $.fn.shineonCalendar = function(options,fn)
 			"compareflag":"false",
 			"focuschange":false,
 			"valShow":false,
-			"disabled":false,
+			"disabled":false
 		},
 		time,
 		ymd,
