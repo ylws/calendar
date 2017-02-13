@@ -98,7 +98,7 @@ $.fn.shineonCalendar = function(options,fn)
 			"cchlt":"canlerder_content_hour_list_title",
 			"ccmlt":"canlerder_content_minutes_list_title",
 			"ccslt":"canlerder_content_seconds_list_title",
-			"canicon":".canlendericon",
+			"canicon":".canlendericon"
 		},
 		settings  = $.extend({},defaults),
 		schy = settings.chy,
@@ -915,6 +915,8 @@ $.fn.shineonCalendar = function(options,fn)
 										$("#pinkh"+i).attr("class","hourselected");
 									}
 								}
+								resetfor(60,"#pinkmi","action",0);
+								resetfor(60,"#pinkse","action",0);
 							}
 							else if(endhour==starthour)
 							{//console.log("e-hour1==--")
