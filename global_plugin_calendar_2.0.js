@@ -878,6 +878,9 @@ $.fn.shineonCalendar = function(options,fn)
 									$("."+ccd+" #pinkd"+i).attr("class","noaction");
 								}
 							}
+							resetfor(24,"#pinkh","action",0);
+							resetfor(60,"#pinkmi","action",0);
+							resetfor(60,"#pinkse","action",0);
 						}
 						else if(endday==startday)
 						{//console.log("aaass22")
@@ -947,6 +950,7 @@ $.fn.shineonCalendar = function(options,fn)
 											$("#pinkmi"+i).attr("class","minutesselected");
 										}
 									}
+									resetfor(60,"#pinkse","action",0);
 								}
 								else if(endminutes==startminutes)
 								{//console.log("小时相等，判断分钟--==")
@@ -1139,7 +1143,10 @@ $.fn.shineonCalendar = function(options,fn)
 					$("."+chmar).prev().hide()	;
 					$("."+chmal).show();
 					$("."+chmal).prev().hide()	;
-					
+					//重置时分秒，都可用
+					resetfor(24,"#pinkh","action",0);
+					resetfor(60,"#pinkmi","action",0);
+					resetfor(60,"#pinkse","action",0);
 				}
 				else{}
 			}
@@ -1218,6 +1225,9 @@ $.fn.shineonCalendar = function(options,fn)
 									$("."+ccd+" #pinkd"+(i+1)).attr("class","noaction");
 								}
 							}
+							resetfor(60,"#pinkse","action",0);
+				    		resetfor(60,"#pinkmi","action",0);
+				    		resetfor(24,"#pinkh","action",0);
 						}
 						else if(endday==startday)
 						{
@@ -1242,7 +1252,7 @@ $.fn.shineonCalendar = function(options,fn)
 							//console.log("年月日天都相等，判断小时")
 							//天相等，判断小时
 							resetfor(24,"#pinkh","action",0);
-							resetfor(24,"#pinkh","noaction",endhour);
+							resetfor(24,"#pinkh","noaction",endhour+1);
 					    	if(starthour>=endhour)
 					    	{
 					    		$("."+cchtxt).attr("hour",endhour);
@@ -1256,21 +1266,21 @@ $.fn.shineonCalendar = function(options,fn)
 									resetminutes(endminutes);
 									resetfor(60,"#pinkmi","noaction",endminutes+1);
 									$("#"+cid()).attr("minutes",endminutes);
-									//判断秒
-									resetseconds(endseconds);
-									resetfor(60,"#pinkmi","noaction",endseconds+1);
+									//判断秒 endseconds以后重置为不可用
+									resetfor(60,"#pinkse","noaction",endseconds);
 									$("#"+cid()).attr("seconds",endseconds);
 									
 								}
 								else
 								{
-									$("#pinkmi"+spanmind).attr("class","minutesselected");
+									$("#pinkmi"+startminutes).attr("class","minutesselected");
 								}
 					    	}
 					    	else
 					    	{
-					    		$("#pinkh"+spanhind).attr("class","hourselected");
-					    		
+					    		$("#pinkh"+starthour).attr("class","hourselected");
+					    		resetfor(60,"#pinkse","action",0);
+				    			resetfor(60,"#pinkmi","action",0);
 					    	}
 						}
 						else
