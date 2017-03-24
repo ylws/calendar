@@ -355,7 +355,7 @@ $.fn.shineonCalendar = function(options,fn)
 		},
 		//返回数值
 		parint=function(param){
-			return parseInt(param);
+			return parseInt(param,10);
 		},
 		//设置attr属性
 		setattr=function(idorclass,idclassval,setorget,attrparam1,attrparam2){
