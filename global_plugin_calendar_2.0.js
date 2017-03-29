@@ -1893,44 +1893,49 @@ $.fn.shineonCalendar = function(options,fn)
 			hour    = nowtime.getHours(),
 			minutes = nowtime.getMinutes(),
 			seconds = nowtime.getSeconds();
-			btnsevent(id,year,month+1,day,hour,minutes,seconds,month,"false");
-			var todayobj={
-				"year":year,
-				"month":month+1,
-				"day":day,
-				"hour":hour,
-				"minutes":minutes,
-				"seconds":seconds
-			};
-			var timeval=$("#"+id).val()||$("#"+id).attr("defval");
-			var res = timeval.split(" ");
-			var change=false;
-			if(res[0].toString().indexOf(partline)<0){
-				if(res[1].toString().indexOf(partline)>0){
-					change=true;
+			if($("#"+id).attr("compareflag")=="true"&&$("#"+id).attr("for").substr(0,2)=="e_"){
+				var endid = $("#"+id).attr("for").substring(2);
+				$("#"+id).val($("#"+endid).val())
+				
+			}else{
+				btnsevent(id,year,month+1,day,hour,minutes,seconds,month,"false");
+				var todayobj={
+					"year":year,
+					"month":month+1,
+					"day":day,
+					"hour":hour,
+					"minutes":minutes,
+					"seconds":seconds
+				};
+				var timeval=$("#"+id).val()||$("#"+id).attr("defval");
+				var res = timeval.split(" ");
+				var change=false;
+				if(res[0].toString().indexOf(partline)<0){
+					if(res[1].toString().indexOf(partline)>0){
+						change=true;
+					}
 				}
+				else{
+					change=false;
+				}
+				if($("#"+id).attr("cflag")=="true")
+				{
+					focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
+					$("#"+id).attr("compareflag","true");
+					var forval=$("#"+id).attr("for");
+					var timeendid=forval.substring(2,forval.length);
+					$("#"+timeendid).attr("defval",$("#"+id).attr("defval"));
+					var rese=$("#"+timeendid).attr("defval").split(" ");
+					focusreset(timeendid,rese,$("#"+timeendid).attr("ymd").length,$("#"+timeendid).attr("ymd"),"focusc",change);
+					$("#"+id).removeAttr("cflag");
+				}
+				else
+				{
+					focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
+				}
+				resetstartend(id);
 			}
-			else{
-				change=false;
-			}
-			if($("#"+id).attr("cflag")=="true")
-			{
-				//console.log("aaaaaa1")
-				focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
-				$("#"+id).attr("compareflag","true");
-				var forval=$("#"+id).attr("for");
-				var timeendid=forval.substring(2,forval.length);
-				$("#"+timeendid).attr("defval",$("#"+id).attr("defval"));
-				var rese=$("#"+timeendid).attr("defval").split(" ");
-				focusreset(timeendid,rese,$("#"+timeendid).attr("ymd").length,$("#"+timeendid).attr("ymd"),"focusc",change);
-				$("#"+id).removeAttr("cflag");
-			}
-			else
-			{
-				//console.log("-----5555552------")
-				focusreset(id,"",$("#"+id).attr("ymd").length,$("#"+id).attr("ymd"),todayobj,change);
-			}
-			resetstartend(id);
+			
 		    $("."+can).hide();
 		};
 	canlendaradd();
